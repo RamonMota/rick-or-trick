@@ -29,6 +29,7 @@ body {
 }
 
 body {
+    overflow: hidden;
     background: var(--color-blue);
 }
 
@@ -48,6 +49,7 @@ p {
 .p-20 {
     padding: var(--space20);
 }
+
 .color-red {
     color: var(--color-red);
 }
@@ -55,9 +57,11 @@ p {
 .gap-5 {
     gap: 5px;
 }
+
 .gap-10 {
     gap: 10px;
 }
+
 .gap-20 {
     gap: var(--space20);
 }
@@ -124,7 +128,6 @@ p {
     align-items: center;
     background: white;
     border-radius: var(--space20);
-    box-shadow: 0 5px 5px #16161640;
     height: 100%;
     width: 100%;
     max-width: 600px;
@@ -143,5 +146,78 @@ p {
 
     &::placeholder {
         opacity: 0.3;
+    }
+}
+
+.correct-answer-animation {
+    animation: correctAnswer 1s ease-in-out forwards;
+}
+
+.wrong-answer-animation {
+    animation: wrongAnswer 1s ease-in-out forwards;
+}
+
+@keyframes wrongAnswer {
+    0% {
+        transform: translateX(0);
+    }
+
+    // 10% {
+    //     transform: translateX(-5px);
+    // }
+
+    // 20% {
+    //     transform: translateX(5px);
+    // }
+
+    // 30% {
+    //     transform: translateX(-5px);
+    // }
+
+    // 40% {
+    //     transform: translateX(5px);
+    // }
+
+    // 50% {
+    //     transform: translateX(-5px);
+    // }
+
+    // 60% {
+    //     transform: translateX(0);
+    // }
+
+    100% {
+        transform: translateX(-200%);
+    }
+}
+
+@keyframes correctAnswer {
+    0% {
+        transform: translateY(0);
+    }
+
+    // 10% {
+    //     transform: translateY(-5px);
+    // }
+
+    // 20% {
+    //     transform: translateY(5px);
+    // }
+
+    // 30% {
+    //     transform: translateY(-5px);
+    // }
+
+    // 40% {
+    //     transform: translateY(5px);
+    // }
+
+    // 50% {
+    //     transform: translateY(0);
+    // }
+
+    100% {
+        transform: translateX(200%);
+
     }
 }

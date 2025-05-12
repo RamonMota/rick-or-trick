@@ -1,15 +1,11 @@
 <template>
-  <a class="button-logout" @click="handleClick">
+  <a class="button-logout" @click="openModal">
     <img src="/public/img/logout.svg" alt="icone logout" />
   </a>
 </template>
 
 <script setup>
-const emit = defineEmits(["click"]);
-
-const handleClick = (event) => {
-  emit("click", event);
-};
+const { openModal } = useLogoutModal();
 </script>
 
 <style>

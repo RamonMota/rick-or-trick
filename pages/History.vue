@@ -9,7 +9,7 @@ definePageMeta({
     <div class="content-box content-history">
       <div class="d-flex w-100 justify-between gap-10 max-content mx-auto">
         <h3 class="title-content">Seu Histórico</h3>
-        <MLogout />
+        <ALogoutIcon />
       </div>
       <ABoxHistory date="15/02/2025" score="3/5" variant="green" />
       <ABoxHistory date="22/01/2025" score="2/5" variant="red" />

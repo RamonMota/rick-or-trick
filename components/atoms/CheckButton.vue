@@ -1,16 +1,21 @@
-<script setup>
+<script setup lang="ts">
+import { AnswerVariant } from "~/types/quizList";
+
 const props = defineProps({
   variant: {
-    type: String,
-    default: "primary",
-    validator: (value) => ["correct", "wrong"].includes(value),
+    type: String as PropType<AnswerVariant | "">,
+    default: "",
+    validator: (value: string) =>
+      [AnswerVariant.CORRECT, AnswerVariant.WRONG, ""].includes(value),
   },
   label: String,
 });
 
-const emit = defineEmits(["click"]);
+const emit = defineEmits<{
+  (e: "click", event: MouseEvent): void;
+}>();
 
-const handleClick = (event) => {
+const handleClick = (event: MouseEvent) => {
   emit("click", event);
 };
 </script>
@@ -25,12 +30,12 @@ const handleClick = (event) => {
       <div class="checkbox-light">
         <div class="box-input">
           <img
-            v-if="variant === 'correct'"
+            v-if="props.variant === AnswerVariant.CORRECT"
             src="/public/img/check.svg"
             alt="icone acertou"
           />
           <img
-            v-else-if="variant === 'wrong'"
+            v-else-if="props.variant === AnswerVariant.WRONG"
             src="/public/img/close.svg"
             alt="icone errou"
           />
@@ -45,12 +50,13 @@ const handleClick = (event) => {
 .checkbox-content {
   border: none;
   width: 100%;
-  height: fit-content;
+  height: 60px;
   min-height: 50px;
   padding: 0 0 10px 0;
   border-radius: var(--space20);
   overflow: hidden;
-  font-size: 18px;
+  font-size: 16px;
+  line-height: 18px;
   font-weight: 700;
   display: flex;
   justify-content: space-around;
@@ -137,6 +143,7 @@ const handleClick = (event) => {
       user-select: none;
 
       .box-input {
+        min-width: 24px;
         width: 24px;
         height: 24px;
         border-radius: 6px;

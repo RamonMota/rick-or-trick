@@ -31,7 +31,7 @@ defineProps<{
   show: boolean;
   variant?: "good" | "bad";
   date?: string;
-  score?: string
+  score?: string;
 }>();
 
 const emit = defineEmits<(e: "close") => void>();

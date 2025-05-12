@@ -1,4 +1,5 @@
 <script setup>
+const { data: quizzes, pending } =  await useFetch("/api/quiz");
 </script>
 
 <template>
@@ -21,7 +22,7 @@
           antes de errar feio.
         </p>
       </div>
-      <MFormLogin/>
+      <MFormLogin />
       <p class="terms">Todos os direitos reservados</p>
     </div>
   </div>

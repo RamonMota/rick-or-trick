@@ -1,32 +1,33 @@
 <template>
   <div class="content-relative">
     <Transition name="slide-fade">
-      <div v-if="show" class="modal-content">
+      <div v-if="showModal" class="modal-content">
         <div class="modal-body">
           <img class="img-modal" src="/public/img/morty.svg" alt="" />
           <h2>Desistir no meio? Que emocionante… quase senti algo.</h2>
         </div>
         <div class="d-flex flex-column gap-10">
-          <AButton @click="emit('close')" label="Continuar" variant="primary" />
-          <AButton @click="emit('click')" label="Sair" variant="secondary" />
+          <AButton @click="closeModal()" label="Continuar" variant="primary" />
+          <AButton @click="handleLogout" label="Sair" variant="secondary" />
         </div>
       </div>
     </Transition>
     <Transition name="fade">
-      <div v-if="show" class="modal-overlay" @click.self="emit('close')" />
+      <div v-if="showModal" class="modal-overlay" @click.self="closeModal()" />
     </Transition>
   </div>
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
-  show: Boolean,
-});
+const { showModal, closeModal } = useLogoutModal();
+const { logout } = useUserAuth();
+const router = useRouter();
 
-const emit = defineEmits<{
-  (e: "close"): void;
-  (e: "click"): void;
-}>();
+const handleLogout = () => {
+  logout();
+  closeModal();
+  router.push(Paths.HOME);
+};
 </script>
 
 <style scoped lang="scss">

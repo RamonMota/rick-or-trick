@@ -1,75 +1,46 @@
-# Nuxt Minimal Starter
+![rickquizAndTrick](./public/thumbnail.png)
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+# Rick or Trick – Teste Técnico
 
-## Setup
+Este é um desafio técnico desenvolvido com **Nuxt 3**, inspirado no universo de **Rick and Morty**. O objetivo é gerar quizzes interativos consumindo a API [rickandmortyapi](https://rickandmortyapi.com/)  e aplicando boas práticas de desenvolvimento front-end.
 
-Make sure to install dependencies:
+## ✨ Funcionalidades
+
+- Geração dinâmica de quizzes com personagens e respostas aleatórias
+- Interação visual para respostas corretas e erradas
+- Progressão animada e reativa
+- Interface baseada em protótipo Figma
+- Autenticação simplificada via `localStorage`
+- consumo de API REST + GraphQL SSR
+
+---
+
+## 🧪 Tecnologias utilizadas
+
+- **Nuxt 3**
+- **TypeScript**
+- **Vue 3 Composition API**
+- **SASS** (ou qualquer lib de estilo que tenha usado)
+- **Rick and Morty API** (REST e GraphQL)
+- **Composables** para estado reativo
+
+---
+
+## 📐 Protótipo Figma
+
+A interface foi projetada no Figma e replicada no front-end com atenção a detalhes e responsividade.
+
+🔗 [Acessar o Figma](https://www.figma.com/design/sdPAQCaynuI25PV1wOfV74/Rick-or-Trick?node-id=42-620&t=QGqayZzQsrweUb0S-1)
+
+---
+
+## 🚀 Como rodar localmente
 
 ```bash
-# npm
+# Instale as dependências
 npm install
 
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
+# Rode o servidor de desenvolvimento
 npm run dev
 
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+# Acesse via: http://localhost:3000

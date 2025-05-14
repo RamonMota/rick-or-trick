@@ -1,41 +1,56 @@
+<script setup lang="ts">
+import { AnswerVariant } from "~/types/quizList";
+const props = defineProps({
+  isOpen: Boolean,
+});
+const today = new Date();
+const formattedDate = today.toLocaleDateString("pt-BR");
+const { totalQuestions, correctAnswers } = useQuizState();
+const emit = defineEmits(["click"]);
+
+const variant = computed<AnswerVariant>(() => {
+  if (totalQuestions.value === 0) return AnswerVariant.WRONG;
+  const percentage = (correctAnswers.value / totalQuestions.value) * 100;
+  return percentage >= 50 ? AnswerVariant.CORRECT : AnswerVariant.WRONG;
+});
+</script>
+
 <template>
   <div class="content-relative">
     <Transition name="fade">
-      <div v-if="show" class="modal-overlay" @click.self="emit('close')" />
+      <div v-if="isOpen" class="modal-overlay"></div>
     </Transition>
 
     <Transition name="slide-fade">
-      <div v-if="show" class="modal-content">
+      <div v-if="isOpen" class="modal-content">
         <div class="modal-body">
           <img
             class="img-modal"
-            :src="variant === 'good' ? '/img/rick.svg' : '/img/jerry.svg'"
+            :src="
+              variant === AnswerVariant.CORRECT
+                ? '/img/rick.svg'
+                : '/img/jerry.svg'
+            "
             alt="Icone personagem"
           />
-          <h2 v-if="variant === 'good'">
+          <h2 v-if="variant === AnswerVariant.CORRECT">
             Hm… nada mal pra um cérebro com Wi-Fi limitado.
           </h2>
           <h2 v-else>Sério isso? Até um Jerry teria se saído melhor…</h2>
         </div>
-        <ABoxHistory :date="date" :score="score" variant="green" />
+        <ABoxHistory
+          :date="formattedDate"
+          :score="`${correctAnswers}/${totalQuestions}`"
+          :variant="variant"
+        />
         <div class="d-flex flex-column gap-10">
-          <AButton @click="emit('close')" label="Concluir" variant="primary" />
+          <AButton @click="emit('click')" label="Tentar novamente"
+          variant="primary" />
         </div>
       </div>
     </Transition>
   </div>
 </template>
-
-<script setup lang="ts">
-defineProps<{
-  show: boolean;
-  variant?: "good" | "bad";
-  date?: string;
-  score?: string;
-}>();
-
-const emit = defineEmits<(e: "close") => void>();
-</script>
 
 <style scoped lang="scss">
 .fade-enter-active,
@@ -79,7 +94,7 @@ const emit = defineEmits<(e: "close") => void>();
   padding: var(--space20);
   max-width: 390px;
   position: fixed;
-  inset: 0;
+  inset: var(--space20);
   height: fit-content;
   z-index: 3;
   margin: auto;
@@ -89,8 +104,8 @@ const emit = defineEmits<(e: "close") => void>();
   gap: 10px;
 
   h2 {
-    font-size: 30px;
-    line-height: 38px;
+    font-size: 28px;
+    line-height: 36px;
   }
 
   .img-modal {

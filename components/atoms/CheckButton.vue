@@ -11,20 +11,14 @@ const props = defineProps({
   label: String,
 });
 
-const emit = defineEmits<{
-  (e: "click", event: MouseEvent): void;
-}>();
-
-const handleClick = (event: MouseEvent) => {
-  emit("click", event);
-};
+const emit = defineEmits(["click"]);
 </script>
 
 <template>
   <div
     class="checkbox-content"
     :class="[`checkbox-${variant}`]"
-    @click="handleClick"
+    @click="emit('click')"
   >
     <div class="checkbox-body">
       <div class="checkbox-light">
@@ -50,19 +44,28 @@ const handleClick = (event: MouseEvent) => {
 .checkbox-content {
   border: none;
   width: 100%;
-  height: 60px;
   min-height: 50px;
   padding: 0 0 10px 0;
   border-radius: var(--space20);
   overflow: hidden;
-  font-size: 16px;
-  line-height: 18px;
-  font-weight: 700;
   display: flex;
   justify-content: space-around;
   align-items: flex-start;
   transition: background-position 0.1s ease-in-out, all 0.1s ease;
   background: var(--color-gray);
+  font-size: 16px;
+  line-height: 18px;
+  font-weight: 700;
+
+  @media (max-width: 400px) and (max-height: 700px) {
+    font-size: 16px;
+    line-height: 18px;
+    font-weight: 600;
+
+    .checkbox-body {
+      min-height: 45px !important;
+    }
+  }
 
   &.checkbox-correct {
     background: var(--color-dark-green);
@@ -95,8 +98,6 @@ const handleClick = (event: MouseEvent) => {
 
   &:not(:disabled):active {
     padding: 0 0 5px 0;
-    transform: translateY(5px);
-    margin-bottom: 5px;
     transform-origin: bottom center;
     .checkbox-body {
       .checkbox-light {
@@ -118,6 +119,7 @@ const handleClick = (event: MouseEvent) => {
     width: 100%;
     border-radius: var(--space20);
     padding: 5px;
+    height: fit-content;
     background-color: white;
     border: 2px solid var(--color-gray);
     transition: background-color 0.1s ease-in-out;
@@ -127,7 +129,7 @@ const handleClick = (event: MouseEvent) => {
       align-items: center;
       gap: calc(var(--space20) - 10px);
       border-radius: calc(var(--space20) - 4px);
-      padding: 0 var(--space20);
+      padding: 0 10px;
       width: 100%;
       display: flex;
       align-items: center;

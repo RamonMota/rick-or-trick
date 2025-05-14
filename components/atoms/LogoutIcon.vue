@@ -1,5 +1,5 @@
 <template>
-  <a class="button-logout" @click="openModal">
+  <a class="button-logout" @click="openModal()">
     <img src="/public/img/logout.svg" alt="icone logout" />
   </a>
 </template>

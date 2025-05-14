@@ -1,21 +1,96 @@
-<template>
-  <div class="flex-content-quiz">
-    <MCardQuiz
-      v-for="quiz in quizzes"
-      :key="quiz.image"
-      :optionsName="quiz.optionsName"
-      :image="quiz.image"
-      @click="handleCheckAnswer(quiz.correctName)"
-    />
-  </div>
-</template>
-
 <script setup lang="ts">
-const { data: quizzes, pending } = await useFetch("/api/quiz");
-const handleCheckAnswer = (answer: string) => {
-  console.log(answer);
+import { ref, watchEffect } from "vue";
+import { AnswerVariant, type IQuizList } from "~/types/quizList";
+import { useQuizState } from "~/composables/useQuizState";
+
+const {
+  data: quizzes,
+  execute: fetchQuizzes,
+  pending,
+} = useFetch<IQuizList[]>("/api/quiz", {
+  immediate: true,
+});
+
+const { currentStep, totalQuestions, correctAnswers, wrongAnswers, resetQuiz } =
+  useQuizState();
+const isModalResultOpen = ref(false);
+const quizSessionId = ref(0);
+const answeredIndexes = ref<number[]>([]);
+const selectedAnswers = ref<Record<number, string>>({});
+
+watchEffect(() => {
+  if (quizzes.value) {
+    totalQuestions.value = quizzes.value.length;
+  }
+});
+
+const handleCheckAnswer = (selectedAnswer: string, quizIndex: number) => {
+  if (answeredIndexes.value.includes(quizIndex)) return;
+
+  const quiz = quizzes.value?.[quizIndex];
+  if (!quiz) return;
+
+  if (selectedAnswer === quiz.correctName) {
+    correctAnswers.value++;
+  }
+  if (selectedAnswer !== quiz.correctName) {
+    wrongAnswers.value++;
+  }
+
+  currentStep.value++;
+  selectedAnswers.value[quizIndex] = selectedAnswer;
+  answeredIndexes.value.push(quizIndex);
+
+  if (currentStep.value >= totalQuestions.value) {
+    setTimeout(() => {
+      handleModalResult();
+    }, 800);
+  }
+};
+
+const handleModalResult = () => {
+  setTimeout(() => {
+    isModalResultOpen.value = true;
+  }, 300);
+};
+
+const restartQuiz = async () => {
+  isModalResultOpen.value = false;
+  resetQuiz();
+  answeredIndexes.value = [];
+  selectedAnswers.value = {};
+
+  await fetchQuizzes();
+  quizSessionId.value++;
 };
 </script>
+
+<template>
+  <div v-if="pending" class="flex-content-quiz">
+    <ASkelleton v-for="n in 3" :key="n" />
+  </div>
+  <div v-else class="flex-content-quiz">
+    <MCardQuiz
+      v-for="(quiz, index) in quizzes"
+      :key="index + '-' + quizSessionId"
+      :visible="!answeredIndexes.includes(index)"
+      :sessionId="quizSessionId"
+      :correctName="quiz.correctName"
+      :optionsName="quiz.optionsName"
+      :image="quiz.image"
+      :delayAnimation="1000"
+      :variant="
+        answeredIndexes.includes(index)
+          ? quiz.correctName === selectedAnswers[index]
+            ? AnswerVariant.CORRECT
+            : AnswerVariant.WRONG
+          : ''
+      "
+      @answer="(answer) => handleCheckAnswer(answer, index)"
+    />
+  </div>
+  <MModalQuiz :isOpen="isModalResultOpen" @click="restartQuiz()" />
+</template>
 
 <style>
 .fake-content {

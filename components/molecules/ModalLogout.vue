@@ -1,23 +1,3 @@
-<template>
-  <div class="content-relative">
-    <Transition name="slide-fade">
-      <div v-if="showModal" class="modal-content">
-        <div class="modal-body">
-          <img class="img-modal" src="/public/img/morty.svg" alt="" />
-          <h2>Desistir no meio? Que emocionante… quase senti algo.</h2>
-        </div>
-        <div class="d-flex flex-column gap-10">
-          <AButton @click="closeModal()" label="Continuar" variant="primary" />
-          <AButton @click="handleLogout" label="Sair" variant="secondary" />
-        </div>
-      </div>
-    </Transition>
-    <Transition name="fade">
-      <div v-if="showModal" class="modal-overlay" @click.self="closeModal()" />
-    </Transition>
-  </div>
-</template>
-
 <script setup lang="ts">
 const { showModal, closeModal } = useLogoutModal();
 const { logout } = useUserAuth();
@@ -30,31 +10,35 @@ const handleLogout = () => {
 };
 </script>
 
-<style scoped lang="scss">
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s ease;
-}
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
+<template>
+  <div class="content-relative">
+    <Transition name="slide-fade">
+      <div v-if="showModal" class="modal-content">
+        <div class="modal-body">
+          <img class="img-modal" src="/public/img/morty.svg" alt="" />
+          <h2>Desistir no meio? Que emocionante… quase senti algo.</h2>
+        </div>
+        <div class="d-flex flex-column gap-10">
+          <AButton @click="closeModal()" label="Continuar" variant="primary" />
+          <AButton @click="handleLogout()" label="Sair" variant="secondary" />
+        </div>
+      </div>
+    </Transition>
+    <Transition name="fade">
+      <div
+        v-if="showModal"
+        class="modal-overlay"
+        @click.self="closeModal()"
+      ></div>
+    </Transition>
+  </div>
+</template>
 
-.slide-fade-enter-active,
-.slide-fade-leave-active {
-  transition: all 0.5s ease;
-}
-.slide-fade-enter-from {
-  opacity: 0;
-  transform: translateY(30px);
-}
-.slide-fade-leave-to {
-  opacity: 0;
-  transform: translateY(30px);
-}
+<style scoped lang="scss">
 
 .content-relative {
   position: relative;
+  z-index: 12;
 }
 
 .modal-overlay {
@@ -73,7 +57,7 @@ const handleLogout = () => {
   padding: var(--space20);
   max-width: 390px;
   position: fixed;
-  inset: 0;
+  inset: var(--space20);
   height: fit-content;
   z-index: 3;
   margin: auto;
@@ -83,8 +67,8 @@ const handleLogout = () => {
   gap: 10px;
 
   h2 {
-    font-size: 30px;
-    line-height: 38px;
+    font-size: 28px;
+    line-height: 36px;
   }
 
   .img-modal {

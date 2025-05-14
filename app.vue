@@ -1,8 +1,8 @@
 <template>
   <div>
     <MModalLogout />
-    <NuxtPage />
-    <!-- <NuxtRouteAnnouncer />
-    <NuxtWelcome /> -->
+    <Transition name="slide-fade" mode="out-in">
+      <NuxtPage />
+    </Transition>
   </div>
 </template>

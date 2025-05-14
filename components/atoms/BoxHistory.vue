@@ -1,11 +1,12 @@
 <script setup>
+import { AnswerVariant } from "~/types/quizList";
 const props = defineProps({
   variant: {
     type: String,
-    validator: (value) => ["green", "red"].includes(value),
+    validator: (value) => [AnswerVariant.CORRECT, AnswerVariant.WRONG].includes(value),
   },
   date: String,
-  score: String,
+  score: String | Number,
 });
 </script>
 
@@ -34,14 +35,14 @@ const props = defineProps({
   align-items: flex-start;
   background: var(--color-gray);
 
-  &.box-history-green {
+  &.box-history-correct {
     .box-history-body {
       .box-history-light {
         color: var(--color-green);
       }
     }
   }
-  &.box-history-red {
+  &.box-history-wrong {
     .box-history-body {
       .box-history-light {
         color: var(--color-red);

@@ -1,27 +1,5 @@
-<template>
-  <div
-    class="content-box content-quiz"
-    :class="[`${variant}-answer-animation`]"
-  >
-    <div class="img-quiz">
-      <img :src="props.image" alt="Personagem do quiz" />
-    </div>
-    <p class="title-quiz">Qual o nome desse personagem?</p>
-    <div class="grid-quiz">
-      <ACheckButton
-        v-for="option in props.optionsName"
-        :key="option"
-        :label="option"
-        @click="handleCheckAnswer(option)"
-        :variant="props.variant"
-      />
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { AnswerVariant } from "~/types/quizList";
-
 const props = defineProps({
   variant: {
     type: String as PropType<AnswerVariant | "">,
@@ -29,14 +7,73 @@ const props = defineProps({
     validator: (value: string) =>
       [AnswerVariant.CORRECT, AnswerVariant.WRONG, ""].includes(value),
   },
+  visible: Boolean,
+  sessionId: Number,
   image: String,
+  delayAnimation: Number,
+  correctName: String,
   optionsName: Array as PropType<string[]>,
 });
+const emit = defineEmits<(event: "answer", value: string) => void>();
+const localVisible = ref(props.visible);
+const selectedOption = ref<string | null>(null);
 
-const handleCheckAnswer = (optionsName: string) => {
-  console.log(optionsName);
+watch(
+  () => props.visible,
+  (vis) => {
+    if (vis) {
+      localVisible.value = true;
+      selectedOption.value = null;
+    } else {
+      setTimeout(() => {
+        localVisible.value = false;
+      }, props.delayAnimation);
+    }
+  }
+);
+watch(
+  () => props.sessionId,
+  () => {
+    localVisible.value = props.visible;
+    selectedOption.value = null;
+  }
+);
+
+const handleCheckAnswer = (option: string) => {
+  if (selectedOption.value) return;
+  selectedOption.value = option;
+  emit("answer", option);
+};
+
+const getVariant = (option: string): AnswerVariant | "" => {
+  if (selectedOption.value !== option) return "";
+  return option === props.correctName
+    ? AnswerVariant.CORRECT
+    : AnswerVariant.WRONG;
 };
 </script>
+
+<template>
+  <div
+    v-if="localVisible"
+    class="content-box content-quiz"
+    :class="[`${variant}-answer-animation`]"
+  >
+    <div class="img-quiz">
+      <img :src="image" alt="Personagem do quiz" />
+    </div>
+    <p class="title-quiz">Adivinhe quem é!?</p>
+    <div class="grid-quiz">
+      <div class="fix-marge" v-for="option in optionsName" :key="option">
+        <ACheckButton
+          :label="option"
+          @click="handleCheckAnswer(option)"
+          :variant="getVariant(option)"
+        />
+      </div>
+    </div>
+  </div>
+</template>
 
 <style scoped>
 .content-quiz {
@@ -46,19 +83,11 @@ const handleCheckAnswer = (optionsName: string) => {
 
   @media (max-width: 400px) and (max-height: 700px) {
     gap: calc(var(--space20) - 10px);
-    .checkbox-content {
-      font-size: 17px;
-
-      .checkbox-body {
-        min-height: 45px !important;
-      }
-    }
   }
   .title-quiz {
-    font-size: 30px;
+    font-size: 25px;
     font-weight: 600;
-    line-height: 35px;
-    text-align: start;
+    text-align: center;
     width: 100%;
 
     @media (min-width: 750px) {
@@ -71,7 +100,7 @@ const handleCheckAnswer = (optionsName: string) => {
   }
 
   .img-quiz {
-    margin-top: var(--space20);
+    margin: var(--space20);
     border-radius: var(--space20);
     flex: 1 1 auto;
     object-fit: contain;
@@ -91,7 +120,7 @@ const handleCheckAnswer = (optionsName: string) => {
     @media (max-width: 400px) and (max-height: 850px) {
       height: 22vh;
       width: 22vh;
-      margin-top: calc(var(--space20) - 5px);
+      margin: calc(var(--space20) - 5px);
     }
   }
 
@@ -108,6 +137,12 @@ const handleCheckAnswer = (optionsName: string) => {
       .checkbox-content {
         font-size: 16px;
       }
+    }
+    .fix-marge {
+      width: 100%;
+      height: 60px;
+      display: flex;
+      align-items: flex-end;
     }
   }
 }

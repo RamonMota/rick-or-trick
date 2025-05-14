@@ -1,7 +1,3 @@
-<script setup>
-const { data: quizzes, pending } =  await useFetch("/api/quiz");
-</script>
-
 <template>
   <div class="content-page">
     <div class="content-img-home">

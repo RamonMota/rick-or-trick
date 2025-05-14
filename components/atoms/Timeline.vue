@@ -1,16 +1,3 @@
-<template>
-  <div class="content-timeline">
-    <p class="no-wrap">{{ currentStep }}/{{ totalQuestions }}</p>
-    <div class="content-progress">
-      <div
-        class="progress"
-        :class="progressClass"
-        :style="{ width: `${progressPercentage}%` }"
-      ></div>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { AnswerVariant } from "~/types/quizList";
 const { correctAnswers, wrongAnswers, currentStep, totalQuestions } =
@@ -33,24 +20,35 @@ const triggerHighlight = (type: AnswerVariant) => {
   }, 300);
 };
 
-watch(correctAnswers, (newVal) => {
-  if (newVal > lastCorrect.value) {
+watch([correctAnswers, wrongAnswers], () => {
+  if (correctAnswers.value > lastCorrect.value) {
     triggerHighlight(AnswerVariant.CORRECT);
-    lastCorrect.value = newVal;
-  } else if (newVal === 0) {
+    lastCorrect.value = correctAnswers.value;
+  } else if (correctAnswers.value === 0) {
     lastCorrect.value = 0;
   }
-});
 
-watch(wrongAnswers, (newVal) => {
-  if (newVal > lastWrong.value) {
+  if (wrongAnswers.value > lastWrong.value) {
     triggerHighlight(AnswerVariant.WRONG);
-    lastWrong.value = newVal;
-  } else if (newVal === 0) {
+    lastWrong.value = wrongAnswers.value;
+  } else if (wrongAnswers.value === 0) {
     lastWrong.value = 0;
   }
 });
 </script>
+
+<template>
+  <div class="content-timeline">
+    <p class="no-wrap">{{ currentStep }}/{{ totalQuestions }}</p>
+    <div class="content-progress">
+      <div
+        class="progress"
+        :class="progressClass"
+        :style="{ width: `${progressPercentage}%` }"
+      ></div>
+    </div>
+  </div>
+</template>
 
 <style>
 .content-timeline {

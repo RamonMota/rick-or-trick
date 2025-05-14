@@ -1,10 +1,3 @@
-<template>
-  <form @submit.prevent="handleLogin" class="d-flex flex-column gap-20">
-    <AInput v-model="name" :error="error" placeholder="Digite seu nome" />
-    <AButton type="submit" label="Entrar" variant="primary" />
-  </form>
-</template>
-
 <script setup>
 const router = useRouter();
 const { login, isLoggedIn } = useUserAuth();
@@ -29,3 +22,10 @@ const handleLogin = () => {
   }
 };
 </script>
+
+<template>
+  <form @submit.prevent="handleLogin" class="d-flex flex-column gap-20">
+    <AInput v-model="name" :error="error" placeholder="Digite seu nome" />
+    <AButton type="submit" label="Entrar" variant="primary" />
+  </form>
+</template>

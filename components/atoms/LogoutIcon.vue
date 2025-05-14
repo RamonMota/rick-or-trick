@@ -1,12 +1,12 @@
+<script setup>
+const { openModal } = useLogoutModal();
+</script>
+
 <template>
   <a class="button-logout" @click="openModal()">
     <img src="/public/img/logout.svg" alt="icone logout" />
   </a>
 </template>
-
-<script setup>
-const { openModal } = useLogoutModal();
-</script>
 
 <style>
 .button-logout {

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { AnswerVariant } from "~/types/quizList";
+
 const props = defineProps({
   variant: {
     type: String as PropType<AnswerVariant | "">,
@@ -14,27 +15,27 @@ const props = defineProps({
   correctName: String,
   optionsName: Array as PropType<string[]>,
 });
-const emit = defineEmits<(event: "answer", value: string) => void>();
-const localVisible = ref(props.visible);
-const selectedOption = ref<string | null>(null);
 
-watch(
-  () => props.visible,
-  (vis) => {
-    if (vis) {
-      localVisible.value = true;
-      selectedOption.value = null;
-    } else {
-      setTimeout(() => {
-        localVisible.value = false;
-      }, props.delayAnimation);
-    }
+const emit = defineEmits<(event: "answer", value: string) => void>();
+
+const selectedOption = ref<string | null>(null);
+const isVisible = ref(props.visible);
+
+watchEffect(() => {
+  if (props.visible) {
+    isVisible.value = true;
+    selectedOption.value = null;
+  } else {
+    setTimeout(() => {
+      isVisible.value = false;
+    }, props.delayAnimation);
   }
-);
+});
+
 watch(
   () => props.sessionId,
   () => {
-    localVisible.value = props.visible;
+    isVisible.value = props.visible;
     selectedOption.value = null;
   }
 );
@@ -47,15 +48,13 @@ const handleCheckAnswer = (option: string) => {
 
 const getVariant = (option: string): AnswerVariant | "" => {
   if (selectedOption.value !== option) return "";
-  return option === props.correctName
-    ? AnswerVariant.CORRECT
-    : AnswerVariant.WRONG;
+  return option === props.correctName ? AnswerVariant.CORRECT : AnswerVariant.WRONG;
 };
 </script>
 
 <template>
   <div
-    v-if="localVisible"
+    v-if="isVisible"
     class="content-box content-quiz"
     :class="[`${variant}-answer-animation`]"
   >

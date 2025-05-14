@@ -20,6 +20,7 @@
     letter-spacing: 0.4px;
     list-style: none;
     box-sizing: border-box;
+    outline: none;
 }
 
 html,
@@ -81,6 +82,10 @@ p {
 
 .d-flex {
     display: flex;
+}
+
+.d-none {
+    display: none;
 }
 
 .flex-column {

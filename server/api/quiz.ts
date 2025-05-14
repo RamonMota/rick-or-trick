@@ -1,16 +1,17 @@
-import type { ICharacter, IQuizList } from "~/types/quizList";
+import type {
+  IGraphQLResponse,
+  IQuizList,
+  IRickAndMortyCharacterListResponse,
+} from "~/types/quizList";
 import { defineEventHandler } from "h3";
 
-interface IGraphQLResponse {
-  data: {
-    charactersByIds: ICharacter[];
-  };
-}
-
 export default defineEventHandler(async (): Promise<IQuizList[]> => {
-  const totalCharacters = 826;
   const quizzes: IQuizList[] = [];
   const usedIds = new Set<number>();
+  const totalRes: IRickAndMortyCharacterListResponse = await $fetch(
+    "https://rickandmortyapi.com/api/character"
+  );
+  const totalCharacters = totalRes.info.count;
 
   const getUniqueRandomIds = (count: number): number[] => {
     const ids = new Set<number>();
@@ -49,7 +50,6 @@ export default defineEventHandler(async (): Promise<IQuizList[]> => {
     );
 
     const characters = response.data.charactersByIds;
-
     const correct = characters[Math.floor(Math.random() * characters.length)];
 
     quizzes.push({

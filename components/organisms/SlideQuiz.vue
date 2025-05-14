@@ -73,13 +73,9 @@ const {
     background: #bcdde5;
     transform: translateY(-16px) scale(0.9);
   }
-  .content-box:nth-child(4) {
+  .content-box:nth-child(n+4) {
     transform: scale(0.9);
     z-index: 2;
-  }
-  .content-box:nth-child(5) {
-    transform: scale(0.9);
-    z-index: 1;
   }
 }
 </style>

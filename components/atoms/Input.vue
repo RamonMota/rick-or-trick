@@ -1,20 +1,3 @@
-<template>
-  <div class="d-flex flex-column gap-5 ">
-    <input
-      class="input-default"
-      :class="{ 'input-error': error }"
-      :value="modelValue"
-      @input="$emit('update:modelValue', $event.target.value)"
-      :placeholder="placeholder"
-      :disabled="disabled"
-      :required="required"
-      type="text"
-    />
-  
-    <p v-if="error" class="input-error-message">{{ error }}</p>
-  </div>
-</template>
-
 <script setup>
 const props = defineProps({
   modelValue: String,
@@ -49,6 +32,24 @@ onBeforeUnmount(() => {
   if (errorTimer) clearTimeout(errorTimer);
 });
 </script>
+
+<template>
+  <div class="d-flex flex-column gap-5">
+    <input
+      class="input-default"
+      :class="{ 'input-error': error }"
+      :value="modelValue"
+      @input="$emit('update:modelValue', $event.target.value)"
+      :placeholder="placeholder"
+      :disabled="disabled"
+      :required="required"
+      type="text"
+    />
+    <Transition name="fade">
+      <p v-if="error" class="input-error-message">{{ error }}</p>
+    </Transition>
+  </div>
+</template>
 
 <style>
 .input-default {

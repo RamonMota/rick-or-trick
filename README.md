@@ -1,5 +1,3 @@
-![rickquizAndTrick](./public/thumbnail.png)
-
 # Rick or Trick – Teste Técnico
 
 Este é um desafio técnico desenvolvido com **Nuxt 3**, inspirado no universo de **Rick and Morty**. O objetivo é gerar quizzes interativos consumindo a API [rickandmortyapi](https://rickandmortyapi.com/)  e aplicando boas práticas de desenvolvimento front-end.

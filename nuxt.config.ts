@@ -18,6 +18,6 @@ export default defineNuxtConfig({
     "~/components",
   ],
 
-  devtools: { enabled: true },
+  devtools: { enabled: false },
   css: ["~/style/global.scss"],
 });

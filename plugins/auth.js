@@ -3,10 +3,6 @@ export default defineNuxtPlugin(() => {
       provide: {
         auth: {
           login(name) {
-            if (!name || name.trim() === '') {
-              throw new Error('Nome não pode estar vazio')
-            }
-            
             localStorage.setItem('userName', name)
             return name
           },

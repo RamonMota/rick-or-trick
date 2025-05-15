@@ -2,7 +2,9 @@
   <div>
     <MModalLogout />
     <Transition name="slide-fade" mode="out-in">
-      <NuxtPage />
+      <div>
+        <NuxtPage />
+      </div>
     </Transition>
   </div>
 </template>

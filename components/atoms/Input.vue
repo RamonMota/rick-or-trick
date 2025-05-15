@@ -21,7 +21,6 @@ watch(
       if (errorTimer) clearTimeout(errorTimer);
 
       errorTimer = setTimeout(() => {
-        console.log("TESTE");
         internalError.value = "";
       }, 4000);
     }

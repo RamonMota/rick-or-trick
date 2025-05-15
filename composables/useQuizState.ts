@@ -1,4 +1,3 @@
-import { ref } from "vue";
 
 export const useQuizState = () => {
   const currentStep = useState<number>("quiz-step", () => 0);
